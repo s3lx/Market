@@ -1,5 +1,4 @@
 import re
-from datetime import date, datetime
 from account import Admin, Operator
 
 
@@ -55,32 +54,20 @@ class Market:
 
     @staticmethod
     def press_enter():
-        """ Common button to proceed "Enter" button
-        """
         while True:
             try:
                 terminal_input = input('\n>>>Press enter to continue\n')
                 if len(terminal_input) == 0:
                     break
                 elif terminal_input != '':
-                    raise Exception
-            except Exception:
-                print(">>>Only enter to press")
+                    print(">>>Only enter to press")
             except KeyboardInterrupt:
                 print("0_O")
 
-    """ Section which proceeds managing of the customer basket
-        1. show_basket() - show actual customer baskets with products
-        2. del_el_basket() - delete element from basket
-    """
     def show_stocks(self) -> str:
-        """
-        """
         return ''.join([f'{x}:' + ' {}\n' for x in self.id_products.keys()]).format(*self.id_products.values())
 
     def show_basket(self) -> str:
-        """
-        """
         output = ''
         for en, (product, gr_un) in enumerate(self.cu_basket, 1):
             f_price = round(gr_un * self.products_prices[self.id_products[product]], 2)
@@ -98,8 +85,6 @@ class Market:
         return output
 
     def del_el_basket(self):
-        """
-        """
         while True:
             print(self.show_basket())
             print('>>>Which element by number of line would you like to delete?')
@@ -115,33 +100,25 @@ class Market:
             except ValueError:
                 print('>>>Only integer')
             except KeyboardInterrupt:
-                print('>>>Tea time :)')
+                print('>>>Tea time')
 
     def show_total_price(self) -> str:
-        """
-        """
         self.total_price = 0
         basket = re.sub('\d{1,3}[.]\s\s', '', self.show_basket())
         line = 52 * '-'
         spaces_all = [21 * ' ', 18 * ' ', 20 * ' ',
                       (29 - (len(str(round(self.total_price, 1)))) + len('Total price')) * ' ']
         return (
-            f"{spaces_all[0]}{self.name}\n{spaces_all[1]}{self.address}\n{spaces_all[2]}{self.phone}\n{line}\n{basket}\n\
-{line}\nTotal price{spaces_all[3]}{round(self.total_price, 2)}€")
+            f"{spaces_all[0]}{self.name}\n{spaces_all[1]}{self.address}\n{spaces_all[2]}{self.phone}\n{line}\n{basket}\n"+\
+            f"{line}\nTotal price{spaces_all[3]}{round(self.total_price, 2)}€")
 
-    """ Main
+    """Main
     """
     def manage_basket(self, acc):
-        """ 1. self.show_stocks() - shows all available stocks
-            2.
-
-        check_stock - > check_id_stock(if is available stock in market -> check_gr
-
-        """
         print('__________________________________________')
         print(self.show_stocks())
-        print('>>>Please enter products id and quantity/grammar\n\
-__________________________________________')
+        print(">>>Please enter products id and quantity/grammar\n"+\
+              "__________________________________________")
         print('>>>c - calculate, d - delete stock')
         self.cu_basket = []
         self.total_price = 0
@@ -153,9 +130,7 @@ __________________________________________')
                 elif terminal_input == 'q':
                     break
                 elif terminal_input != '':
-                    raise Exception
-            except Exception:
-                print(">>>Press enter or q to quite")
+                    print(">>>Press enter or q to quite")
             except KeyboardInterrupt:
                 print('Where are you going ? ^^')
 
@@ -186,9 +161,7 @@ __________________________________________')
                     self.total_price = 0
                     break
                 elif terminal_input != '':
-                    raise Exception
-            except Exception:
-                print(">>>Press enter or q to quite")
+                    print(">>>Press enter or q to quite")
             except KeyboardInterrupt:
                 print("What's up ? =)")
             else:
@@ -198,18 +171,7 @@ __________________________________________')
                 self.press_enter()
                 break
 
-    """ Section for 
-    """
     def check_stock(self):
-        """ 1. Checks if stock is available in market by id:
-               check_id_stock()
-            2. if stock classified by kg/gr then:
-               check_gr()
-               :return:
-               or if classified by unit then:
-               check_unit()
-               :return:
-        """
         pr_id = self.check_id_stock()
         if pr_id in self.pr_per_gr:
             gr = self.check_gr()
@@ -222,9 +184,6 @@ __________________________________________')
         return pr_id
 
     def check_id_stock(self):
-        """ Check stock by id
-            :return:
-        """
         while True:
             try:
                 pr_id = input('>>>Product id:').strip()
@@ -235,17 +194,12 @@ __________________________________________')
                 elif pr_id == 'd':
                     self.del_el_basket()
                 elif pr_id not in self.id_products:
-                    raise Exception
+                    print('>>>Error: There is no such id in list with actual products or type q to quit')
                 return pr_id
-            except Exception:
-                print('>>>Error: There is no such id in list with actual products or type q to quit')
             except KeyboardInterrupt:
-                print("hm..not this time :)")
+                print("hm..not this time")
 
     def check_gr(self):
-        """ Checks products kg/gr
-            :return:
-        """
         while True:
             try:
                 gr = input('>>>kg/gr:').strip()
@@ -253,17 +207,12 @@ __________________________________________')
                     break
                 gr = (lambda x: x if self.gr_limit[0] < float(x) <= self.gr_limit[1] else False)(gr)
                 if gr is False:
-                    raise Exception
+                    print('>>>Error: Only float type [0.01-100.00] or q to quit')
                 return float(gr)
-            except Exception:
-                print('>>>Error: Only float type [0.01-100.00] or q to quit')
             except KeyboardInterrupt:
                 print("(=")
 
     def check_unit(self):
-        """ Checks products per unit
-            :return:
-        """
         while True:
             try:
                 un = input('>>>Quantity:').strip()
@@ -276,15 +225,7 @@ __________________________________________')
             except KeyboardInterrupt:
                 print("(づ｡◕‿‿◕｡)づ")
 
-    """ Section for managing stocks:
-        1. Show stocks with id and name:  show_id()
-        2. Provides based on names and prices: show_prices()
-        3. Adding stock: add_stock()*
-        4. Delete stock: del_stock()*
-    """
     def show_id(self):
-        """
-        """
         print('\n' + '\n'.join([f'{x}:' + ' {}' for x in self.id_products.keys()]).format(*self.id_products.values()))
         self.press_enter()
 
@@ -294,11 +235,9 @@ __________________________________________')
         self.press_enter()
 
     def add_stock(self):
-        """
-        """
         while True:
             try:
-                product = input('>>>Enter product name')
+                product = input('>>>Enter product name:')
                 if product == 'q':
                     break
                 check_exist = True if product in self.id_products.values() else False
@@ -309,17 +248,13 @@ __________________________________________')
                     self.id_products[number] = product
                     self.products_prices[product] = price
                 else:
-                    raise Exception
+                    print('>>>This product already exists')
             except ValueError:
                 print('>>>Only float type')
-            except Exception:
-                print('>>>This product already exists')
             except KeyboardInterrupt:
                 print('>>>bool(Today)')
 
     def del_stock(self):
-        """
-        """
         while True:
             try:
                 product = input('>>>Product number:')
@@ -332,24 +267,15 @@ __________________________________________')
                     del self.id_products[product]
                     print(self.show_basket())
                 else:
-                    raise Exception
-            except ValueError:
-                print('>>>There is no such product')
+                    print('>>>There is no such product')
+            except KeyboardInterrupt:
+                print('>>>This is just KeyboardInterrupt')
 
-    """ Section of the products promo prices:
-        1. show promo: show_promo()*
-        2. adding promo: add_promo()*
-        3. delete promo: del_promo()*
-    """
     def show_promo(self):
-        """ Show promo price for certain product
-        """
         print('\n' + '\n'.join([f'{x}:' + ' {}%' for x in self.promo_price.keys()]).format(*self.promo_price.values()))
         self.press_enter()
 
     def add_promo(self):
-        """ Add promo price for required product
-        """
         while True:
             try:
                 product = input('>>>Enter product name:')
@@ -360,17 +286,13 @@ __________________________________________')
                     promo = float(input('>>>Promo:'))
                     self.promo_price[product] = promo
                 else:
-                    raise Exception
+                    print('>>>This product is already exists')
             except ValueError:
                 print('>>>Only float type')
-            except Exception:
-                print('>>>This product is already exists')
             except KeyboardInterrupt:
                 print('>>>:...>_>.......<_<')
 
     def del_promo(self):
-        """ Delete promo price for actual product
-        """
         while True:
             try:
                 product = input('>>>Product name:')
@@ -380,38 +302,23 @@ __________________________________________')
                 if check_exist:
                     del self.promo_price[product]
                 else:
-                    raise Exception
-            except Exception:
-                print('>>>There is no such product')
+                    print('>>>There is no such product')
             except KeyboardInterrupt:
                 print('( ੭ ˙ᗜ˙ )੭ ')
 
-    """ Section for managing accounts:
-        1. Show accounts: show_accounts()*
-        2. Create account:  create_account()*
-        3. Delete account :delete_acc()*
-    """
     def show_accounts(self):
-        """ Show all available accounts:
-            1.Admins
-            2.Operators
-        """
         print('\n'.join([f'N{list(self.accounts.items())[i][0]} - Login name:{list(self.accounts.values())[i][0].login}'
                          for i in range(len(self.accounts))]))
         self.press_enter()
 
     def create_account(self, word):
-        """ Creates account:
-            1.Admin
-            2.Operator
-        """
         while True:
             try:
                 e_q = input(">>>Press enter to continue or q to quite:")
                 if len(e_q) == 0:
                     if word == 'admin':
                         oAccount = Admin('login', 'name', 'surname', 'password')
-                        if oAccount.name not in [list(self.accounts.values())[i][0].login for i in
+                        if oAccount.login not in [list(self.accounts.values())[i][0].login for i in
                                                  range(len(self.accounts))]:
                             self.accounts[self.acc_count] = oAccount, True
                             self.acc_count += 1
@@ -421,7 +328,7 @@ __________________________________________')
                             print('>>>Login is already exists')
                     elif word == 'operator':
                         oAccount = Operator('login', 'name', 'surname', 'password', 'worktime')
-                        if oAccount.name not in [list(self.accounts.values())[i][0].login for i in
+                        if oAccount.login not in [list(self.accounts.values())[i][0].login for i in
                                                  range(len(self.accounts))]:
                             self.accounts[self.acc_count] = oAccount, False
                             self.acc_count += 1
@@ -432,16 +339,12 @@ __________________________________________')
                 elif e_q == 'q':
                     break
                 elif e_q != '':
-                    raise Exception
-            except Exception:
-                print(">>>Enter or q to quite")
+                    print(">>>Enter or q to quite")
             except KeyboardInterrupt:
-                print('How is weather? :)')
+                print('How is weather?')
 
     def delete_acc(self):
-        """ Deletes certain account by id
-        """
-        print(self.show_accounts())
+        self.show_accounts()
         while True:
             try:
                 number = input('>>>Choose account number to delete:')

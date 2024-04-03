@@ -1,5 +1,7 @@
 from sys import exit
+import maskpass
 from market import Market
+
 
 oMarket = Market('Best Market', 'Central street 33', '(22) 333-4444')
 print(">>>Hi! In order to proceed please create an admin account")
@@ -20,7 +22,7 @@ while True:
     surname = ''
     try:
         login = input('>>>Login:').strip()
-        password = input('>>>Password:').strip()
+        password = maskpass.advpass('>>>Password:')
         check_login = [[i, el] for i, el in
                        [(i, list(oMarket.accounts.values())[i][0].login) for i in range(len(oMarket.accounts))] if
                        el == login]
@@ -29,8 +31,8 @@ while True:
                                         range(len(oMarket.accounts))] else False
         if check_login is False or password is False:
             raise Exception
-    except Exception:
-        print('>>>Login or password is not correct')
+    except Exception as e:
+        print('>>>Login or password is not correct', e)
     else:
         check_admin = True if True is list(oMarket.accounts.values())[check_login_filter[0]][1] else False
         login = list(oMarket.accounts.values())[check_login_filter[0]][0].login
@@ -42,20 +44,21 @@ while True:
             print('\n>>>Hi')
             try:
                 print(f'>>>Admin: {name} {surname}')
-                print("Type:\n\
-manage       = manage basket\n\
-operator     = create operator account\n\
-accounts     = show all accounts\n\
-delete acc   = delete account\n\
-show id      = products id's\n\
-show prices  = products prices\n\
-show promo   = products promo\n\
-add promo    = add promo for the product\n\
-delete promo = delete promo of the product\n\
-add stock    = add stock with price\n\
-delete stock = delete stock from market\n\
-q            = exit")
+                print("Type:\nmanage       = manage basket\n" + \
+                      "operator     = create operator account\n" + \
+                      "accounts     = show all accounts\n" + \
+                      "delete acc   = delete account\n" + \
+                      "show id      = products id's\n" + \
+                      "show prices  = products prices\n" + \
+                      "show promo   = products promo\n" + \
+                      "add promo    = add promo for the product\n" + \
+                      "delete promo = delete promo of the product\n" + \
+                      "add stock    = add stock with price\n" + \
+                      "delete stock = delete stock from market\n" + \
+                      "q            = exit")
+
                 terminal_input = input('>>>').strip()
+
                 if terminal_input == 'manage':
                     oMarket.manage_basket(login)
                 elif terminal_input == 'operator':
@@ -91,9 +94,9 @@ q            = exit")
             print('\n>>>Hi')
             try:
                 print(f'>>>Operator: {name} {surname}')
-                print('Type:\n\
-manage = manage basket\n\
-q      = exit')
+                print("Type:\n" + \
+                      "manage = manage basket\n" + \
+                      "q      = exit")
                 terminal_input = input().strip()
                 if terminal_input == 'manage':
                     oMarket.manage_basket(login)
