@@ -29,7 +29,7 @@ class Admin:
             except ValueError:
                 print('>>>Only letters, digits and _ sign are accepted')
             except KeyboardInterrupt:
-                print("How is going?")
+                print("Just a Keyboard Interrupt")
 
 
     @staticmethod
@@ -47,7 +47,7 @@ class Admin:
             except ValueError:
                 print('>>>At least one special character and one digit')
             except KeyboardInterrupt:
-                print("Easy go")
+                print("Just another Keyboard Interrupt")
 
 
     @property
@@ -61,10 +61,6 @@ class Admin:
     @name.setter
     def name(self, name: str):
         self.__name = self.check_log_name_last(name)
-
-    @name.deleter
-    def name(self):
-        print(">>>Name can't be deleted")
 
     @property
     def surname(self):
