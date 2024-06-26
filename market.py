@@ -20,9 +20,6 @@ class Market:
         self.accounts = {}
         self.acc_count = 0
 
-        self.invoices = {}
-        self.shifts = {}
-
         self.id_products = {
             'p1': 'tomato',
             'p2': 'potato',
@@ -132,10 +129,10 @@ class Market:
                 elif terminal_input != '':
                     print(">>>Press enter or q to quite")
             except KeyboardInterrupt:
-                print('Where are you going ? ^^')
+                print('Where are you going ?')
 
         if terminal_input == 'q':
-            return print('Have a nice day : )\n')
+            return print('Have a nice day!\n')
 
         while True:
             stock = self.check_stock()
@@ -163,7 +160,7 @@ class Market:
                 elif terminal_input != '':
                     print(">>>Press enter or q to quite")
             except KeyboardInterrupt:
-                print("What's up ? =)")
+                print("What's up ?")
             else:
                 print(self.show_total_price())
                 self.cu_basket = []
@@ -197,7 +194,7 @@ class Market:
                     print('>>>Error: There is no such id in list with actual products or type q to quit')
                 return pr_id
             except KeyboardInterrupt:
-                print("hm..not this time")
+                print("check id stock")
 
     def check_gr(self):
         while True:
